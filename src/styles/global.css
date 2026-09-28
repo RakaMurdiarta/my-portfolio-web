@@ -12,8 +12,8 @@
   --radius-md: 24px;
   --radius-lg: 40px;
 
-  --font-mono: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace;
-  --font-sans: 'Open Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: var(--font-fira-code);
+  --font-sans: var(--font-open-sans);
 
   /* Mobile first: 44px on phones, 96px on desktop. */
   --display: clamp(44px, 7.6vw + 12px, 96px);

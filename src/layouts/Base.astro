@@ -1,4 +1,5 @@
 ---
+import { Font } from 'astro:assets';
 import '../styles/global.css';
 import { site } from '../data/site';
 
@@ -28,12 +29,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={site.ogDescription} />
     <meta name="twitter:card" content="summary" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Open+Sans:ital,wght@0,400;0,600;1,400&display=swap"
-    />
+    <Font cssVariable="--font-open-sans" preload={[{ weight: 400, style: 'normal' }]} />
+    <Font cssVariable="--font-fira-code" preload />
 
     <!-- Lets CSS hide reveal-on-scroll content only when JS can reveal it again. -->
     <script is:inline>document.documentElement.classList.add('js');</script>
