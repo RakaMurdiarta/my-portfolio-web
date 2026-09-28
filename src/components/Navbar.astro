@@ -1,0 +1,244 @@
+---
+import Icon from './Icon.astro';
+import Pill from './Pill.astro';
+import { site, nav, socials } from '../data/site';
+---
+
+<header class="nav">
+  <a class="nav__logo" href="#top">
+    <span class="nav__logo-mobile">{site.handle}</span>
+    <span class="nav__logo-desktop">{site.firstName}<br />{site.lastName}</span>
+  </a>
+
+  <nav class="nav__menu" aria-label="Primary">
+    <ul>
+      {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+    </ul>
+  </nav>
+
+  <p class="status nav__status"><span class="dot"></span>Available</p>
+
+  <button
+    class="nav__toggle"
+    type="button"
+    aria-expanded="false"
+    aria-controls="mobile-menu"
+    aria-label="Menu"
+    data-menu-open
+  >
+    <Icon name="menu" size={24} />
+  </button>
+</header>
+
+<div class="menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menu" hidden data-menu>
+  <div class="menu__top">
+    <span class="nav__logo">{site.handle}</span>
+    <button class="nav__toggle" type="button" aria-label="Close" data-menu-close>
+      <Icon name="close" size={24} />
+    </button>
+  </div>
+
+  <nav aria-label="Mobile">
+    <ul class="menu__list">
+      {
+        nav.map((item) => (
+          <li>
+            <a href={item.href} data-menu-link>
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <div class="menu__foot">
+    <p class="status"><span class="dot"></span>{site.status}</p>
+    <ul class="menu__socials">
+      {socials.hero.map((link) => <li><Pill link={link} /></li>)}
+    </ul>
+  </div>
+</div>
+
+<style>
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px var(--gutter) 0;
+  }
+
+  .nav__logo {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .nav__logo-desktop,
+  .nav__menu,
+  .nav__status {
+    display: none;
+  }
+
+  .nav__toggle {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-right: -10px;
+    border: 0;
+    background: none;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  @media (min-width: 640px) {
+    .nav {
+      padding-top: 32px;
+    }
+
+    .nav__logo-mobile,
+    .nav__toggle {
+      display: none;
+    }
+
+    .nav__logo-desktop,
+    .nav__status {
+      display: block;
+    }
+
+    .nav__status {
+      display: inline-flex;
+    }
+
+    .nav__logo {
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    .nav__menu {
+      display: block;
+    }
+
+    .nav__menu ul {
+      display: flex;
+      gap: 40px;
+    }
+
+    .nav__menu a {
+      position: relative;
+      font-size: 13px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav__menu a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -4px;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s var(--ease);
+    }
+
+    .nav__menu a:hover::after {
+      transform: scaleX(1);
+    }
+  }
+
+  /* ---------- Fullscreen mobile menu (F-02) ---------- */
+
+  .menu {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    padding: 24px var(--gutter) 32px;
+    background: var(--bg);
+    overflow-y: auto;
+  }
+
+  .menu[hidden] {
+    display: none;
+  }
+
+  .menu__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .menu__list {
+    margin-top: 64px;
+  }
+
+  .menu__list a {
+    display: block;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 40px;
+    line-height: 1.1;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .menu__foot {
+    display: grid;
+    gap: 20px;
+    margin-top: auto;
+    padding-top: 48px;
+  }
+
+  .menu__socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .menu:not([hidden]) {
+      animation: menu-in 0.4s var(--ease);
+    }
+  }
+
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(-12px);
+    }
+  }
+</style>
+
+<script>
+  const menu = document.querySelector<HTMLElement>('[data-menu]')!;
+  const openBtn = document.querySelector<HTMLButtonElement>('[data-menu-open]')!;
+  const closeBtn = document.querySelector<HTMLButtonElement>('[data-menu-close]')!;
+
+  const setOpen = (open: boolean, restoreFocus = true) => {
+    menu.hidden = !open;
+    openBtn.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (open) closeBtn.focus();
+    else if (restoreFocus) openBtn.focus();
+  };
+
+  openBtn.addEventListener('click', () => setOpen(true));
+  closeBtn.addEventListener('click', () => setOpen(false));
+  menu.querySelectorAll('[data-menu-link]').forEach((link) => link.addEventListener('click', () => setOpen(false, false)));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !menu.hidden) setOpen(false);
+  });
+  // Close if the viewport grows past the mobile breakpoint while open.
+  matchMedia('(min-width: 640px)').addEventListener('change', (e) => {
+    if (e.matches && !menu.hidden) setOpen(false);
+  });
+</script>

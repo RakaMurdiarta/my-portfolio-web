@@ -1,0 +1,212 @@
+---
+import type { MockVariant } from '../data/site';
+
+/**
+ * Palette-matched illustrations used as project imagery until real screenshots exist.
+ * Swap a tile to a real image by giving it `src` + `alt` in src/data/site.ts.
+ */
+interface Props {
+  variant: MockVariant;
+  glyph?: string;
+}
+
+const { variant, glyph } = Astro.props;
+// Unique per instance so each scene's gradient picks up its own tile colors.
+const skyId = `sky-${Math.random().toString(36).slice(2, 8)}`;
+const chart = '0,120 30,96 60,108 90,60 120,84 150,40 180,70 210,30 240,52 270,18 304,36';
+---
+
+{
+  variant === 'dashboard' && (
+    <svg class="mock" viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice">
+      <rect class="faint" x="16" y="16" width="40" height="228" rx="10" />
+      {[40, 64, 88, 112].map((y) => <circle class="dim" cx="36" cy={y} r="5" />)}
+      <rect class="accent" x="72" y="16" width="96" height="60" rx="10" />
+      <rect class="faint" x="176" y="16" width="96" height="60" rx="10" />
+      <rect class="faint" x="280" y="16" width="104" height="60" rx="10" />
+      <rect class="ink" x="84" y="30" width="44" height="8" rx="4" />
+      <rect class="ink" x="84" y="48" width="64" height="14" rx="4" />
+      <rect class="dim" x="188" y="30" width="44" height="8" rx="4" />
+      <text class="timer" x="292" y="56">00:02:23</text>
+      <rect class="faint" x="72" y="88" width="312" height="156" rx="10" />
+      <g transform="translate(76 108)">
+        <polyline class="line" points={chart} />
+        {chart.split(' ').map((pt) => {
+          const [x, y] = pt.split(',');
+          return <rect class="bar" x={Number(x) - 3} y={Number(y) + 8} width="6" height={124 - Number(y)} rx="3" />;
+        })}
+      </g>
+    </svg>
+  )
+}
+
+{
+  variant === 'scene' && (
+    <svg class="mock scene" viewBox="0 0 200 300" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id={skyId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" class="sky-top" />
+          <stop offset="1" class="sky-bottom" />
+        </linearGradient>
+      </defs>
+      <rect width="200" height="300" fill={`url(#${skyId})`} />
+      {[[30, 40], [160, 30], [110, 70], [60, 110], [175, 120], [20, 150]].map(([x, y]) => (
+        <circle class="star" cx={x} cy={y} r="1.6" />
+      ))}
+      <circle class="moon" cx="130" cy="96" r="30" />
+      <path class="hill-back" d="M0 210 Q50 170 100 196 T200 180 V300 H0Z" />
+      <path class="hill-front" d="M0 250 Q70 214 120 240 T200 232 V300 H0Z" />
+    </svg>
+  )
+}
+
+{
+  variant === 'phone' && (
+    <svg class="mock" viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice">
+      <rect class="surface stroke" x="70" y="24" width="124" height="252" rx="22" />
+      <rect class="ink" x="112" y="34" width="40" height="8" rx="4" />
+      <rect class="soft" x="86" y="58" width="92" height="18" rx="9" />
+      {[92, 132, 172, 212].map((y, i) => (
+        <g>
+          <circle class={i === 0 ? 'accent' : 'soft'} cx="98" cy={y + 10} r="10" />
+          <rect class="ink" x="116" y={y + 2} width="54" height="6" rx="3" />
+          <rect class="dim-ink" x="116" y={y + 14} width="38" height="5" rx="2.5" />
+        </g>
+      ))}
+      <rect class="ink" x="214" y="44" width="124" height="232" rx="22" />
+      <text class="kana" x="276" y="112">カ</text>
+      {[0, 1, 2].map((row) =>
+        [0, 1, 2].map((col) => (
+          <rect
+            class={row === 1 && col === 1 ? 'accent' : 'faint'}
+            x={228 + col * 34}
+            y={148 + row * 30}
+            width="28"
+            height="22"
+            rx="6"
+          />
+        )),
+      )}
+    </svg>
+  )
+}
+
+{
+  variant === 'chat' && (
+    <svg class="mock" viewBox="0 0 200 300" preserveAspectRatio="xMidYMid slice">
+      <rect class="surface stroke" x="30" y="16" width="140" height="300" rx="24" />
+      <rect class="ink" x="30" y="16" width="140" height="44" rx="24" />
+      <rect class="ink" x="30" y="40" width="140" height="20" />
+      <circle class="accent" cx="54" cy="40" r="10" />
+      <rect class="light" x="72" y="34" width="54" height="6" rx="3" />
+      <rect class="dim-light" x="72" y="44" width="34" height="5" rx="2.5" />
+      <rect class="soft" x="42" y="76" width="92" height="30" rx="12" />
+      <rect class="accent" x="72" y="116" width="86" height="22" rx="11" />
+      <rect class="soft" x="42" y="148" width="104" height="44" rx="12" />
+      <rect class="soft" x="42" y="202" width="70" height="22" rx="11" />
+      <rect class="accent" x="86" y="234" width="72" height="22" rx="11" />
+    </svg>
+  )
+}
+
+{variant === 'glyph' && <span class="glyph">{glyph}</span>}
+
+<style>
+  .mock {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ink {
+    fill: var(--ink);
+  }
+  .accent {
+    fill: var(--accent);
+  }
+  .soft {
+    fill: var(--soft);
+  }
+  .surface {
+    fill: var(--surface);
+  }
+  .stroke {
+    stroke: var(--ink);
+    stroke-width: 3;
+  }
+  .light {
+    fill: var(--bg);
+  }
+  .dim-light {
+    fill: var(--bg);
+    opacity: 0.5;
+  }
+  .dim-ink {
+    fill: var(--ink);
+    opacity: 0.35;
+  }
+  .faint {
+    fill: var(--bg);
+    opacity: 0.1;
+  }
+  .dim {
+    fill: var(--bg);
+    opacity: 0.35;
+  }
+  .line {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2.5;
+    stroke-linejoin: round;
+  }
+  .bar {
+    fill: var(--accent);
+    opacity: 0.18;
+  }
+  .timer,
+  .kana {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    fill: var(--bg);
+  }
+  .timer {
+    font-size: 17px;
+  }
+  .kana {
+    font-size: 56px;
+    text-anchor: middle;
+  }
+
+  /* Scene colors follow the tile tone set on the parent (see Projects). */
+  .sky-top {
+    stop-color: var(--sky-top, var(--soft));
+  }
+  .sky-bottom {
+    stop-color: var(--sky-bottom, var(--line));
+  }
+  .star {
+    fill: var(--star, var(--surface));
+  }
+  .moon {
+    fill: var(--moon, var(--surface));
+  }
+  .hill-back {
+    fill: var(--hill, var(--ink));
+    opacity: 0.35;
+  }
+  .hill-front {
+    fill: var(--hill, var(--ink));
+    opacity: 0.7;
+  }
+
+  .glyph {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 48cqmin;
+    line-height: 1;
+  }
+</style>

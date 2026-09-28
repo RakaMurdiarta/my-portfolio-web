@@ -1,0 +1,46 @@
+---
+import Icon from './Icon.astro';
+import type { SocialLink } from '../data/site';
+
+interface Props {
+  link: SocialLink;
+}
+
+const { link } = Astro.props;
+const external = link.href.startsWith('http');
+---
+
+<a
+  class="pill"
+  href={link.href}
+  data-copy={link.copy}
+  title={link.copy ? 'Copy email' : undefined}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener noreferrer' : undefined}
+>
+  <Icon name={link.icon} size={15} />
+  <span>{link.label}</span>
+</a>
+
+<style>
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 8px 18px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink);
+    font-size: 13px;
+    font-style: italic;
+    text-decoration: none;
+    transition: background-color 0.25s var(--ease), border-color 0.25s var(--ease);
+  }
+
+  .pill:hover {
+    background: var(--soft);
+    border-color: var(--soft);
+  }
+</style>

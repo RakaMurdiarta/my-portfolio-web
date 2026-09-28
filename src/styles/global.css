@@ -1,0 +1,296 @@
+/* Tokens from docs/palette.md — every color on the page comes from here. */
+:root {
+  --bg: #f3f8f5;
+  --surface: #ffffff;
+  --soft: #e3f1eb;
+  --ink: #0e3b3a;
+  --muted: #4e6e69;
+  --line: #cfe0da;
+  --accent: #3ddc97;
+
+  --radius-sm: 12px;
+  --radius-md: 24px;
+  --radius-lg: 40px;
+
+  --font-mono: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: 'Open Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Mobile first: 44px on phones, 96px on desktop. */
+  --display: clamp(44px, 7.6vw + 12px, 96px);
+  --gutter: 16px;
+  --section-gap: 96px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --gutter: 32px;
+    --section-gap: 128px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --gutter: 40px;
+    --section-gap: 160px;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (min-width: 1024px) {
+  body {
+    font-size: 18px;
+  }
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+figure {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+/* Keywords in prose: italic + ink, the rest stays muted. */
+em {
+  color: var(--ink);
+  font-style: italic;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--ink);
+}
+
+section[id],
+footer[id] {
+  scroll-margin-top: 24px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Page frame ---------- */
+
+.frame {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  /* clip (not hidden): a hidden box is still scrollable, so anchor jumps would
+     scroll the frame itself and leave the top of the page unreachable. */
+  overflow: hidden;
+  overflow: clip;
+  isolation: isolate;
+}
+
+@media (min-width: 1024px) {
+  .frame {
+    margin: 32px auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+  }
+}
+
+@media (min-width: 1264px) {
+  .frame {
+    margin: 48px auto;
+  }
+}
+
+.section {
+  position: relative;
+  padding-inline: var(--gutter);
+  margin-top: var(--section-gap);
+}
+
+/* Thin decorative circles behind hero, About, Projects, Contacts. */
+.circle {
+  position: absolute;
+  z-index: -1;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* ---------- Type ---------- */
+
+.display {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: var(--display);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+@media (min-width: 1024px) {
+  .label {
+    font-size: 14px;
+  }
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+@media (min-width: 1024px) {
+  .mono {
+    font-size: 14px;
+  }
+}
+
+/* ---------- Status dot ---------- */
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--ink);
+}
+
+.dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .status .dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: ping 2s var(--ease) infinite;
+  }
+}
+
+@keyframes ping {
+  75%,
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/* ---------- Scroll reveal (F-09) — only hides content once JS is running ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.8s var(--ease),
+      transform 0.8s var(--ease);
+  }
+
+  .js [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Toast (F-07) ---------- */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--bg);
+  font-size: 14px;
+  font-style: italic;
+  transform: translate(-50%, 16px);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.3s var(--ease),
+    transform 0.3s var(--ease);
+}
+
+.toast.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}

@@ -1,0 +1,212 @@
+---
+import Pill from './Pill.astro';
+import { contacts, footerNav, site, socials } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="section contacts" id="contacts">
+  <span class="circle contacts__circle" aria-hidden="true"></span>
+
+  <div class="contacts__top" data-reveal>
+    <h2 class="label">... /Contacts ...</h2>
+    <nav class="contacts__nav" aria-label="Footer">
+      <ul>
+        {footerNav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      </ul>
+    </nav>
+    <div class="site-card">
+      <h3>Site</h3>
+      <p class="mono">
+        Handcrafted by ME /<br />
+        Designed by {site.credits.designedBy} /<br />
+        Powered by {site.credits.poweredBy}
+      </p>
+    </div>
+  </div>
+
+  <div class="contacts__main" data-reveal>
+    <p class="contacts__cta" set:html={contacts.cta} />
+    <p class="contacts__name">
+      <span class="display">{site.firstName}</span>
+      <span class="contacts__role">{site.role}</span>
+      <span class="display contacts__last">{site.lastName}</span>
+    </p>
+  </div>
+
+  <ul class="contacts__socials">
+    {socials.footer.map((link) => <li><Pill link={link} /></li>)}
+  </ul>
+
+  <p class="contacts__copy">© {year} {site.firstName} {site.lastName}</p>
+</footer>
+
+<style>
+  .contacts {
+    display: grid;
+    padding-bottom: 32px;
+  }
+
+  .contacts__circle {
+    width: 560px;
+    height: 560px;
+    top: -140px;
+    left: -300px;
+  }
+
+  .contacts__nav ul {
+    display: flex;
+    gap: 24px;
+    margin-top: 16px;
+  }
+
+  .contacts__nav a {
+    font-size: 13px;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .contacts__nav a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+
+  .site-card {
+    width: fit-content;
+    margin-top: 24px;
+    padding: 18px 24px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+  }
+
+  .site-card h3 {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--ink);
+  }
+
+  .site-card p {
+    margin-top: 8px;
+    line-height: 2;
+  }
+
+  .contacts__main {
+    margin-top: 48px;
+  }
+
+  .contacts__cta {
+    max-width: 32ch;
+  }
+
+  /* Zig-zag name: first name left, last name right, role tucked in between. */
+  .contacts__name {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    margin-top: 32px;
+  }
+
+  .contacts__name .display {
+    grid-column: 1 / -1;
+  }
+
+  .contacts__role {
+    grid-row: 2;
+    grid-column: 1;
+    align-self: center;
+    max-width: 9ch;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .contacts__last {
+    grid-row: 2;
+    grid-column: 2;
+    justify-self: end;
+  }
+
+  .contacts__socials {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 32px;
+  }
+
+  .contacts__socials :global(.pill) {
+    width: 100%;
+  }
+
+  .contacts__copy {
+    margin-top: 32px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  @media (min-width: 640px) {
+    .contacts__socials {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .contacts__role {
+      font-size: 13px;
+    }
+  }
+
+  /* Desktop: name bottom-left, nav + site card top-right. */
+  @media (min-width: 1024px) {
+    .contacts {
+      grid-template-columns: 1.5fr 1fr;
+      column-gap: 64px;
+      padding-bottom: 40px;
+    }
+
+    .contacts__circle {
+      width: 760px;
+      height: 760px;
+      top: 40px;
+      left: -260px;
+    }
+
+    .contacts__top {
+      grid-column: 2;
+      grid-row: 1;
+      justify-self: end;
+      width: min(100%, 360px);
+    }
+
+    .contacts__nav ul {
+      justify-content: space-between;
+    }
+
+    .site-card {
+      width: 100%;
+    }
+
+    .contacts__main {
+      grid-column: 1;
+      grid-row: 1;
+      align-self: end;
+      margin-top: 0;
+    }
+
+    .contacts__name {
+      column-gap: 48px;
+    }
+
+    .contacts__role {
+      grid-column: 1;
+    }
+
+    .contacts__socials,
+    .contacts__copy {
+      grid-column: 1 / -1;
+    }
+
+    .contacts__socials {
+      gap: 12px;
+      margin-top: 56px;
+    }
+  }
+</style>

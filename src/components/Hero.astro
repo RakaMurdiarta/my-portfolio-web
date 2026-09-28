@@ -1,0 +1,125 @@
+---
+import ArrowButton from './ArrowButton.astro';
+import Pill from './Pill.astro';
+import { hero, site, socials } from '../data/site';
+---
+
+<section class="hero" id="top">
+  <span class="circle hero__circle" aria-hidden="true"></span>
+
+  <div class="hero__head">
+    <h1 class="display hero__title">
+      <span class="hero__line hero__line--one">{hero.lineOne}</span>
+      <span class="hero__line hero__line--two">{hero.lineTwo}</span>
+    </h1>
+    <p class="hero__lead" set:html={hero.lead} />
+    <div class="hero__cta">
+      <ArrowButton href="#projects" label="Projects" />
+    </div>
+  </div>
+
+  <p class="status hero__status"><span class="dot"></span>{site.status}</p>
+
+  <ul class="hero__socials">
+    {socials.hero.map((link) => <li><Pill link={link} /></li>)}
+  </ul>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding: 56px var(--gutter) 0;
+  }
+
+  .hero__circle {
+    width: 520px;
+    height: 520px;
+    top: -300px;
+    right: -320px;
+  }
+
+  .hero__title {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Zig-zag headline: line one left, line two right. */
+  .hero__line--two {
+    align-self: flex-end;
+  }
+
+  .hero__lead {
+    max-width: 30ch;
+    margin-top: 28px;
+  }
+
+  .hero__cta {
+    margin-top: 28px;
+  }
+
+  .hero__status {
+    margin-top: 32px;
+  }
+
+  .hero__socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  @media (min-width: 640px) {
+    .hero {
+      padding-top: 88px;
+    }
+
+    .hero__circle {
+      width: 720px;
+      height: 720px;
+      top: -360px;
+      right: -380px;
+    }
+
+    .hero__lead {
+      max-width: 38ch;
+    }
+  }
+
+  /* Desktop: lead tucks under line one beside "Developer", CTA sits beside "Backend". */
+  @media (min-width: 1024px) {
+    .hero {
+      padding-top: 80px;
+    }
+
+    .hero__head {
+      position: relative;
+    }
+
+    .hero__lead {
+      position: absolute;
+      left: 0;
+      bottom: 0.25em;
+      max-width: min(34ch, calc(100% - var(--display) * 5.9));
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .hero__cta {
+      position: absolute;
+      top: calc(var(--display) * 0.525);
+      right: 0;
+      margin: 0;
+      transform: translateY(-50%);
+    }
+
+    .hero__status {
+      margin-top: 40px;
+    }
+
+    .hero__socials {
+      justify-content: center;
+      gap: 12px 40px;
+      margin-top: 32px;
+    }
+  }
+</style>

@@ -1,0 +1,49 @@
+---
+import Base from '../layouts/Base.astro';
+import ArrowButton from '../components/ArrowButton.astro';
+import { site } from '../data/site';
+---
+
+<Base title={`404 — ${site.title}`} description="Looks like this route doesn't exist.">
+  <main class="not-found">
+    <span class="circle not-found__circle" aria-hidden="true"></span>
+    <p class="label">... /404 ...</p>
+    <h1 class="display">
+      <span>404 /</span>
+      <span class="not-found__line">endpoint not found</span>
+    </h1>
+    <p>Looks like this route doesn't exist.</p>
+    <ArrowButton href="/" label="Back to home" />
+  </main>
+</Base>
+
+<style>
+  .not-found {
+    position: relative;
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: 28px;
+    min-height: min(100svh, 900px);
+    padding: 64px var(--gutter);
+  }
+
+  .not-found__circle {
+    width: 560px;
+    height: 560px;
+    top: -200px;
+    right: -300px;
+  }
+
+  h1 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-size: clamp(36px, 7vw, 88px);
+  }
+
+  .not-found__line {
+    align-self: flex-end;
+    text-align: right;
+  }
+</style>

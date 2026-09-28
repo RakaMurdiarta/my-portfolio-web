@@ -1,0 +1,58 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  href: string;
+  label: string;
+}
+
+const { href, label } = Astro.props;
+---
+
+<a class="arrow-btn" href={href}>
+  <span class="arrow-btn__label">{label}</span>
+  <span class="arrow-btn__icon"><Icon name="arrow-right" size={18} /></span>
+</a>
+
+<style>
+  .arrow-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .arrow-btn__label {
+    display: grid;
+    place-items: center;
+    min-width: 180px;
+    height: 44px;
+    padding: 0 32px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--bg);
+    font-size: 14px;
+    font-style: italic;
+  }
+
+  .arrow-btn__icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--ink);
+    transition: transform 0.3s var(--ease);
+  }
+
+  .arrow-btn:hover .arrow-btn__icon {
+    transform: translateX(4px);
+  }
+
+  @media (min-width: 1024px) {
+    .arrow-btn__label {
+      min-width: 240px;
+    }
+  }
+</style>
