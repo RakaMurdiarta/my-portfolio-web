@@ -2,8 +2,7 @@
 import { defineConfig, fontProviders } from 'astro/config';
 
 export default defineConfig({
-  // TODO: replace with the real domain once it's ready.
-  site: 'https://rakamurdiarta.dev',
+  site: 'https://rakamurdiarta.my.id',
   build: {
     // The whole stylesheet is small; inlining it removes a render-blocking request.
     inlineStylesheets: 'always',
