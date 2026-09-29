@@ -11,6 +11,8 @@ export type IconName =
   | 'telegram'
   | 'mail'
   | 'instagram'
+  | 'globe'
+  | 'check'
   | 'arrow-right'
   | 'arrow-up-right'
   | 'menu'
@@ -62,8 +64,7 @@ const github: SocialLink = { label: 'GitHub', icon: 'github', href: 'https://git
 const linkedin: SocialLink = { label: 'LinkedIn', icon: 'linkedin', href: 'https://www.linkedin.com/in/rakamurdiarta/' };
 const mail: SocialLink = { label: 'Email', icon: 'mail', href: `mailto:${email}`, copy: email };
 const instagram: SocialLink = { label: 'Instagram', icon: 'instagram', href: 'https://www.instagram.com/rakamurdiartaa/' };
-// TODO: only used by the placeholder Anime Sentry project; replace or remove with the real projects.
-const telegram: SocialLink = { label: 'Telegram', icon: 'telegram', href: 'https://t.me/' };
+const website = (href: string): SocialLink => ({ label: 'Website', icon: 'globe', href });
 
 export const socials = {
   github,
@@ -104,78 +105,138 @@ export const work: { start: string; end?: string; months?: number; company: stri
   { start: '2022', end: '2022', months: 3, company: 'DJOIN', role: 'Data Analyst Intern' },
 ];
 
-/**
- * Collage tiles are placed with CSS grid areas on a 6-column grid (`areas`).
- * Each tile uses either a real image (`src` + `alt`) or a built-in illustration (`mock`).
- * NOTE: projects are placeholders from the reference design until Raka's are ready.
- */
+/** Illustrations drawn by Mock.astro, used where a project has no screenshots. */
 export type MockVariant = 'dashboard' | 'phone' | 'chat' | 'scene' | 'glyph';
-
-export interface ProjectTile {
-  area: string;
-  src?: string;
-  alt?: string;
-  mock?: MockVariant;
-  glyph?: string;
-  tone?: 'ink' | 'soft' | 'surface' | 'mint';
-}
 
 export interface Project {
   name: string;
+  /** Which group of the list the project appears under. */
+  category: 'work' | 'freelance';
+  /** Who it was built for, shown under the name in the list and above the title. */
+  client: string;
+  /** Tagline under the title. */
+  summary: string;
+  /** Three short points shown as a checklist. */
+  highlights: string[];
   tags: string[];
-  description: string[];
   links: SocialLink[];
-  areas: string[];
-  tiles: ProjectTile[];
+  /** Set for apps behind a login; the button then reads "Open app" and shows this note. */
+  access?: string;
+  /**
+   * Screenshots in /public/images/projects: desktop 1200×750, mobile 400×866 (WebP).
+   * Without them the showcase draws a mock dashboard and shows `glyph` on the phone.
+   */
+  shots?: { desktop: string; mobile: string };
+  glyph?: string;
 }
 
+const shots = (slug: string) => ({
+  desktop: `/images/projects/${slug}-desktop.webp`,
+  mobile: `/images/projects/${slug}-mobile.webp`,
+});
+
+// TODO: `tags` for the TJS/Baliola apps are a best guess — adjust to the real stack.
 export const projects: Project[] = [
   {
-    name: 'Gostat',
-    tags: ['Golang', 'TypeScript', 'Gin', 'Next.js', 'PostgreSQL', 'Redis'],
-    description: [
-      '<em>GoStat</em> — a <em>microservice-based</em> application designed to handle <em>HTTP request authentication</em> and statistics with finesse.',
-      'The project <em>comprises several key microservices</em>, each contributing to its overall functionality and reliability.',
+    name: 'e.id',
+    category: 'work',
+    client: 'Baliola × PANDI',
+    summary: 'A <em>digital identity wallet</em>: verified once, trusted everywhere.',
+    highlights: [
+      'Holders keep IDs, work badges, diplomas, and tickets in <em>one wallet</em> and <em>choose what to share</em>.',
+      'Verifiers <em>check credentials cryptographically</em>, without having to contact the issuer.',
+      'Built on <em>W3C standards</em> and the <em>IDCHAIN</em> blockchain, with <em>passwordless SSO</em> and 50K+ verified users.',
     ],
-    links: [github],
-    areas: ['a a a a b b', 'a a a a b b', 'a a a a b b', '. . c c . .', '. . c c . .'],
-    tiles: [
-      { area: 'a', mock: 'dashboard', tone: 'ink' },
-      { area: 'b', mock: 'scene', tone: 'ink' },
-      { area: 'c', mock: 'scene', tone: 'mint' },
-    ],
+    tags: ['Next.js', 'Verifiable Credentials', 'IDCHAIN', 'SSO'],
+    links: [website('https://e.id/')],
+    shots: shots('e-id'),
   },
   {
-    name: 'Kana Master',
-    tags: ['TypeScript', 'React Native', 'Redux Toolkit', 'i18n', 'iOS'],
-    description: [
-      'Kana Master is an <em>iOS application</em> designed for <em>learning Katakana and Hiragana</em>. It includes various <em>tests and practical exercises</em> that help in learning and memorizing Japanese characters.',
-      'The app also offers <em>audio training for correct pronunciation</em> and demonstrates how to properly <em>draw each character</em>.',
+    name: 'SMIS',
+    category: 'work',
+    client: 'Tunas Jaya Sanur',
+    summary: 'Manages <em>project workers</em>, from <em>attendance</em> to <em>payment</em>.',
+    highlights: [
+      '<em>Daily attendance</em> is recorded on site for every project.',
+      'Work progress is measured through <em>opname</em> (work-volume checks).',
+      'Those records turn straight into <em>worker payments</em>, with no spreadsheets to reconcile.',
     ],
-    links: [github],
-    areas: ['. . c c . .', '. . c c . .', 'b b a a a a', 'b b a a a a', '. . a a a a'],
-    tiles: [
-      { area: 'a', mock: 'phone', tone: 'soft' },
-      { area: 'b', mock: 'glyph', glyph: 'ア', tone: 'surface' },
-      { area: 'c', mock: 'glyph', glyph: 'あ', tone: 'ink' },
-    ],
+    tags: ['Next.js', 'Workforce', 'Attendance', 'Payroll'],
+    links: [website('https://smis-client.tjstestapp.com/')],
+    access: 'Internal app · login required',
+    glyph: 'SMIS',
   },
   {
-    name: 'Anime Sentry',
-    tags: ['Golang', 'GORM', 'PostgreSQL', 'i18n', 'goquery', 'gocron'],
-    description: [
-      '<em>Hey, anime fans!</em> Struggling to track new episodes? Anime Sentry is your solution. <em>Get auto-notifications for new episode releases!</em>',
-      '<em>How it works:</em><ul><li>Send the bot <em>your anime link</em>.</li><li>Get release schedules instantly. Skip searching the web or social media.</li><li><em>Every 30 mins, the bot checks for new episodes using a cron schedule.</em> Be the first to know about voice or subtitle updates!</li></ul>',
-      '<em>Connect now and never miss an episode!</em>',
+    name: 'IPMS',
+    category: 'work',
+    client: 'Tunas Jaya Sanur',
+    summary: 'Plan, track, and report on <em>every project</em> in one place.',
+    highlights: [
+      'The company’s internal <em>project management</em> system.',
+      'Keeps <em>schedules, progress, and reports</em> together.',
+      'Gives the office and the site <em>the same view</em> of each project.',
     ],
-    links: [telegram, github],
-    areas: ['c c a a b b', 'c c a a b b', 'd d a a b b', 'd d a a . .', 'd d . . . .'],
-    tiles: [
-      { area: 'a', mock: 'chat', tone: 'soft' },
-      { area: 'b', mock: 'scene', tone: 'mint' },
-      { area: 'c', mock: 'glyph', glyph: '▶', tone: 'ink' },
-      { area: 'd', mock: 'scene', tone: 'soft' },
+    tags: ['Project Management', 'Dashboard', 'REST API'],
+    links: [website('https://ipms.pttjs.id/')],
+    access: 'Internal app · login required',
+    glyph: 'IPMS',
+  },
+  {
+    name: 'SIA',
+    category: 'work',
+    client: 'Tunas Jaya Sanur',
+    summary: 'Every transaction <em>recorded, balanced, and reported</em>.',
+    highlights: [
+      'The company’s internal <em>accounting</em> app (Sistem Informasi Akuntansi).',
+      'Turns daily transactions into <em>books and financial reports</em>.',
+      'Backed by an API where <em>every number has to add up</em>.',
     ],
+    tags: ['Accounting', 'General Ledger', 'Financial Reports'],
+    links: [website('https://tjssia.com')],
+    access: 'Internal app · login required',
+    glyph: 'SIA',
+  },
+  {
+    name: 'Penida Tour Island',
+    category: 'freelance',
+    client: 'Tour operator · Nusa Penida',
+    summary: 'Private island tours, <em>booked in one tap</em>.',
+    highlights: [
+      'Day tours, snorkeling, overnight stays, and temple trips with <em>clear prices and inclusions</em>.',
+      '<em>One-tap WhatsApp booking</em> on every page, fast on mobile.',
+      '<em>5.0 Tripadvisor</em> rating, a gallery, and an FAQ up front to build trust.',
+    ],
+    tags: ['Astro', 'Vercel', 'SEO', 'WhatsApp Booking'],
+    links: [website('https://penidatourbali.vercel.app')],
+    shots: shots('penida-tour'),
+  },
+  {
+    name: 'Rumah Sunat Permadi',
+    category: 'freelance',
+    client: 'Clinic · South Kalimantan',
+    summary: 'Helping parents <em>choose with confidence</em>, then book on WhatsApp.',
+    highlights: [
+      'Explains services <em>from infants to adults</em>, run by Dr. Gilir Permadi.',
+      'Compares five methods, including the <em>needle-free Combo Sealer</em>, plus home visits.',
+      'Every page leads to a <em>free WhatsApp consultation</em>.',
+    ],
+    tags: ['Astro', 'Vercel', 'SEO', 'WhatsApp Booking'],
+    links: [website('https://rumah-sunat-permadi.vercel.app/')],
+    shots: shots('rumah-sunat-permadi'),
+  },
+  {
+    name: 'Umah Luwung',
+    category: 'freelance',
+    client: 'Interior studio · Bali',
+    summary: 'Custom interiors, from <em>portfolio to free consultation</em>.',
+    highlights: [
+      '<em>Bilingual (ID / EN)</em> site for a custom interior and furniture maker in Singaraja.',
+      'Project portfolio and a <em>five-step process</em> from design to installation.',
+      '<em>4.9★ Google reviews</em>, with a WhatsApp consultation on every page.',
+    ],
+    tags: ['Astro', 'i18n', 'SEO', 'Vercel'],
+    links: [website('https://umah-luwung.vercel.app/id')],
+    shots: shots('umah-luwung'),
   },
 ];
 

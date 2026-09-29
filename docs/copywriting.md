@@ -81,41 +81,24 @@ Isi di bawah adalah **usulan** untuk backend developer — sesuaikan dengan stac
 ## 5. Projects
 
 - Label: `... /Projects ...`
-- Catatan: sementara memakai isi referensi karena project asli belum siap. Ganti saat data project Raka sudah ada.
+- Layout: showcase. Kiri daftar project (nama + klien, dikelompokkan Work / Freelance). Kanan satu kartu: bar atas (nomor `05 / 07` + tombol ← →), kanvas screenshot (browser + HP), lalu info: badge kategori, nama, tagline, tombol **Visit website ↗** (atau **Open app ↗** + catatan *Internal app · login required*), 3 poin highlight, dan tag. Di HP daftar jadi chip yang bisa digeser, dan kartu bisa di-swipe.
+- Sumber teks: `src/data/site.ts` → `projects` (`client`, `summary` = tagline, `highlights` = 3 poin, `access` = catatan app internal).
+- Screenshot: `public/images/projects/<slug>-desktop.webp` (1200×750) dan `<slug>-mobile.webp` (400×866). Project tanpa screenshot memakai ilustrasi.
 
-### Project 1 — Gostat
-- Tag: Golang · TypeScript · Gin · Next.js · PostgreSQL · Redis
-- Deskripsi:
-  > *GoStat* — a *microservice-based* application designed to handle *HTTP request authentication* and statistics with finesse.
-  >
-  > The project *comprises several key microservices*, each contributing to its overall functionality and reliability.
-- Tombol: GitHub ↗
+### Work
+| Project | Tagline |
+|---|---|
+| **e.id** (Baliola × PANDI) | A *digital identity wallet* by Baliola × PANDI: *verified once, trusted everywhere.* |
+| **SMIS** (Internal TJS) | Manages *project workers*, from *attendance* to *opname* to *payment*. |
+| **IPMS** (Internal TJS) | Plan, track, and report on *every project* in one place. |
+| **SIA** (Internal TJS) | Every transaction *recorded, balanced, and reported*. |
 
-### Project 2 — Kana Master
-- Tag: TypeScript · React Native · Redux Toolkit · i18n · iOS
-- Deskripsi:
-  > Kana Master is an *iOS application* designed for *learning Katakana and Hiragana*. It includes various *tests and practical exercises* that help in learning and memorizing Japanese characters.
-  >
-  > The app also offers *audio training for correct pronunciation* and demonstrates how to properly *draw each character*.
-- Tombol: GitHub ↗
-
-### Project 3 — Anime Sentry
-- Tag: Golang · GORM · PostgreSQL · i18n · goquery · gocron
-- Deskripsi:
-  > *Hey, anime fans!* Struggling to track new episodes? Anime Sentry is your solution. *Get auto-notifications for new episode releases!*
-  >
-  > **How it works:**
-  > - Send the bot *your anime link*.
-  > - Get release schedules instantly. Skip searching the web or social media.
-  > - *Every 30 mins, the bot checks for new episodes using a cron schedule.* Be the first to know about voice or subtitle updates!
-  >
-  > *Connect now and never miss an episode!*
-- Tombol: Telegram ↗ · GitHub ↗
-
-### Template untuk project asli nanti (fokus backend)
-> **[Nama Project]** — a *[jenis sistem, mis. REST API / payment service]* built to *[masalah yang diselesaikan]*.
-> Handles *[angka skala, mis. 50k requests/day]* with *[teknik kunci, mis. Redis caching & queue workers]*, cutting *[metrik]* by *[x%]*.
-> My role: *[apa yang Raka kerjakan]*.
+### Freelance
+| Project | Tagline |
+|---|---|
+| **Penida Tour Island** | Private island tours, *booked in one tap*. |
+| **Rumah Sunat Permadi** | Helping parents *choose with confidence*, then book on WhatsApp. |
+| **Umah Luwung** | Custom interiors, from *portfolio to free consultation*. |
 
 ---
 
